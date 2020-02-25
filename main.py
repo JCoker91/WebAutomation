@@ -1,5 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+import time
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 chrome_browser = webdriver.Chrome('./chromedriver.exe')
 
@@ -39,4 +42,14 @@ select.select_by_index(1)
 button = chrome_browser.find_element_by_id('mainPage_cmdHandlers_remoteControlWksDet_rmPopup_okButton')
 button.click()
 
-chrome_browser.quit()
+time.sleep(2)
+
+
+
+actions = ActionChains(chrome_browser)
+actions.send_keys()
+
+
+# alertPrompt = chrome_browser.switch_to_alert()
+# alertPrompt.accept()
+#chrome_browser.quit()
