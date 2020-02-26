@@ -1,5 +1,5 @@
 from receiveInput import getFileMakerDatabase, getComputerName
-from chromeAuto import remoteControl, getCredentials
+from chromeAuto import remoteControl, getCredentials, Driver
 import sys
 
 
@@ -14,7 +14,12 @@ if __name__ == '__main__':
         sys.exit()
 
     credentials = getCredentials()
+    username = credentials['username']
+    password = credentials['password']
+
+    driver = Driver()
 
     while True:
         computerName = getComputerName(computerList)
-        remoteControl(computerName, credentials['username'], credentials['password'])
+        driver.remoteControl(username, password, computerName)
+        #remoteControl(computerName, credentials['username'], credentials['password'])

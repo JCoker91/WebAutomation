@@ -37,6 +37,28 @@ def getCredentials():
         print('\n\nInvalid logon credentials. Please try again.\n\n')
         getCredentials()
 
+class Driver():
+    def __init__(self):
+        self.driver = webdriver.Chrome('./chromedriver.exe')
+    
+    def getURL(self, browser):
+        return self.driver.get(browser)
+    
+    def remoteControl(self, userName, passWord, computerName):
+        self.getURL('https://10.37.0.228/zenworks/jsp/index.jsp?pageid=deviceList')
+        button = self.driver.find_element_by_id('details-button')
+        button.click()
+        button = self.driver.find_element_by_id('proceed-link')
+        button.click()
+        username = self.driver.find_element_by_id('username')
+        username.clear()
+        username.send_keys(userName)
+        password = self.driver.find_element_by_id('password')
+        password.clear()
+        password.send_keys(passWord)
+        button = self.driver.find_element_by_id('loginButton')
+        button.click()
+
 def remoteControl(computerName, userName, passWord):
     chrome_browser = webdriver.Chrome('./chromedriver.exe')
     chrome_browser.get('https://10.37.0.228/zenworks/jsp/index.jsp?pageid=deviceList')
@@ -81,3 +103,7 @@ def remoteControl(computerName, userName, passWord):
     #chrome_browser.quit()
 
 
+if __name__ == '__main__':
+    driver = Driver()
+    driver.getURL('https://www.google.com')
+    
