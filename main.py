@@ -1,25 +1,29 @@
-from receiveInput import getFileMakerDatabase, getComputerName
-from chromeAuto import remoteControl, getCredentials, Driver
-import sys
-
+from receiveInput import getFileMakerDatabase, getComputerNameFromCPU
+from chromeAuto import Driver
+from os import system
+from sys import exit
 
 
 if __name__ == '__main__':
-    # program initialization
-    try: 
-        FM_Export = 'FM_ALL.csv'
-        computerList = getFileMakerDatabase(FM_Export)
-    except:
-        print('Error loading database.')
-        sys.exit()
 
-    credentials = getCredentials()
+   # initialize dictionary from exported FileMaker csv
+    system('clear')
+    FM_Export = 'FM_AdLL.csv' 
+    try: 
+        FileMakerDatabase = getFileMakerDatabase(FM_Export)
+    except Exception as err:
+        print(f'\n\n{err}\n\n')
+        exit()
+
+    # initialize web driver
+    driver = Driver()
+
+    # validate and initialize ZENWorks credentials
+    credentials = driver.getZENWorksCredentials()
     username = credentials['username']
     password = credentials['password']
 
-    driver = Driver()
-
+    # Run program
     while True:
-        computerName = getComputerName(computerList)
-        driver.remoteControl(username, password, computerName)
-        #remoteControl(computerName, credentials['username'], credentials['password'])
+        computerName = getComputerNameFromCPU(FileMakerDatabase)
+        driver.remoteControlZENWorks(username, password, computerName)

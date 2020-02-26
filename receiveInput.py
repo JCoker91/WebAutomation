@@ -12,14 +12,13 @@ def getFileMakerDatabase(csvFile):
             print(f"Fail at {row['Computer_Name']}, {row['CPU']}")
         return myDict
 
-def getComputerName(databaseDict):
+def getComputerNameFromCPU(databaseDict):
     test = False
     while test == False:
         cpuNumber = input('CPU Number: ')
         if cpuNumber != '':
             try:
                 computerName = databaseDict[cpuNumber]
-                print(f"Connecting to {computerName}")
                 test = True
                 return computerName
             except KeyError as err:
