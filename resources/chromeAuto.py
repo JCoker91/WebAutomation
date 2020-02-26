@@ -3,6 +3,7 @@ from sys import exit
 from os import system
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
 from getpass import getpass
 from selenium.webdriver.common.keys import Keys
 
@@ -14,10 +15,19 @@ class Driver():
         self.driver = webdriver.Chrome('./chromedriver.exe')
         self.driver.get(browser)
     
+    def getURLWindowless(self, browser):
+        options = Options()
+        options.add_argument('--headless')
+        options.add_argument('--disable-gpu')
+        self.driver = webdriver.Chrome('./chromedriver.exe',options=options)
+        self.driver.get(browser)
+    
     def getZENWorksCredentials(self):
+        print('\n\nZENWorks login credentials\n')
         userName = input('Username: ')
         passWord = getpass('Password: ')
-        self.getURL('https://10.37.0.228/zenworks/jsp/index.jsp?pageid=deviceList')
+        print('\nVerifying ZENWorks credentials. Please wait...\n')
+        self.getURLWindowless('https://10.37.0.228/zenworks/jsp/index.jsp?pageid=deviceList')
         try:
             button = self.driver.find_element_by_id('details-button')
             button.click()
