@@ -12,11 +12,15 @@ if __name__ == '__main__':
     try: 
         FileMakerDatabase = getFileMakerDatabase(FM_Export)
     except Exception as err:
-        print(f'\n\n{err}\n\n')
+        print(f'\n\nError initializing database. Error: {err}\n\n')
         exit()
 
     # initialize web driver
-    driver = Driver()
+    try:
+        driver = Driver()
+    except Exception as err:
+        print(f"\n\nError initializing web driver. Error: {err}\n\n")
+        exit()
 
     # validate and initialize ZENWorks credentials
     credentials = driver.getZENWorksCredentials()
