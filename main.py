@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
    # initialize dictionary from exported FileMaker csv
     system('clear')
-    FM_Export = 'FM_AdLL.csv' 
+    FM_Export = 'FM_ALL.csv' 
     try: 
         FileMakerDatabase = getFileMakerDatabase(FM_Export)
     except Exception as err:
