@@ -8,26 +8,27 @@ from getpass import getpass
 from selenium.webdriver.common.keys import Keys
 
 class Driver():
-    def __init__(self):
-        pass
+    def __init__(self, show_window=False):
+        self.show_window = show_window
     
     def getURL(self, browser):
-        self.driver = webdriver.Chrome('./chromedriver.exe')
-        self.driver.get(browser)
+        if self.show_window == True:
+            self.driver = webdriver.Chrome('./chromedriver.exe')
+            self.driver.get(browser)
+        else:
+            options = Options()
+            options.add_argument('--headless')
+            options.add_argument('--disable-gpu')
+            self.driver = webdriver.Chrome('./chromedriver.exe',options=options)
+            self.driver.get(browser)
     
-    def getURLWindowless(self, browser):
-        options = Options()
-        options.add_argument('--headless')
-        options.add_argument('--disable-gpu')
-        self.driver = webdriver.Chrome('./chromedriver.exe',options=options)
-        self.driver.get(browser)
-    
+    # gets ZENWorks credentials from user and validates before exitting function
     def getZENWorksCredentials(self):
-        print('\n\nZENWorks login credentials\n')
+        print('\nZENWorks login credentials')
         userName = input('Username: ')
         passWord = getpass('Password: ')
         print('\nVerifying ZENWorks credentials. Please wait...\n')
-        self.getURLWindowless('https://10.37.0.228/zenworks/jsp/index.jsp?pageid=deviceList')
+        self.getURL('https://10.37.0.228/zenworks/jsp/index.jsp?pageid=deviceList')
         try:
             button = self.driver.find_element_by_id('details-button')
             button.click()
