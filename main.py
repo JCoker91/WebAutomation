@@ -1,5 +1,5 @@
-from receiveInput import getFileMakerDatabase, getComputerNameFromCPU
-from chromeAuto import Driver
+from resources.receiveInput import getFileMakerDatabase, getComputerNameFromCPU
+from resources.chromeAuto import Driver
 from os import system
 from sys import exit
 
