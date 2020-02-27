@@ -1,36 +1,28 @@
-from resources.receiveInput import getFileMakerDatabase, getComputerNameFromCPU
-from resources.chromeAuto import Driver
+from resources import receiveInput
+from resources.chromeAutomation import Driver
 from os import system
 from sys import exit
 import sys
 
+FM_Export = 'resources/FM.csv'
 
 if __name__ == '__main__':
+    system('clear')
 
-    try:
-        if sys.argv[1] == '-w':
-            show_window = True
-            window_mode = 'ON'
-        else:
-            show_window = False
-            window_mode = 'OFF'
-    except IndexError:
-        show_window = False
-        window_mode = 'OFF'
+    # get command line arguments to set parameters
+    configuration = receiveInput.getCommandLineArgs()
 
     # initialize dictionary from exported FileMaker csv
-    system('clear')
-    FM_Export = 'FM_ALL.csv' 
     try: 
-        FileMakerDatabase = getFileMakerDatabase(FM_Export)
+        FileMakerDatabase = receiveInput.getFileMakerDatabase(FM_Export)
     except Exception as err:
         print(f'\n\nError initializing database. Error: {err}\n\n')
         exit()
 
     # initialize web driver
     try:
-        driver = Driver(show_window)
-        print(f"Starting program\nBrowser Window Mode: {window_mode}")
+        driver = Driver(configuration)
+        print(f"Starting program\nBrowser Window Mode: {configuration['window_mode']}\n")
     except Exception as err:
         print(f"\n\nError initializing web driver. Error: {err}\n\n")
         exit()
@@ -40,7 +32,8 @@ if __name__ == '__main__':
     username = credentials['username']
     password = credentials['password']
 
-    # Run program
+    # Run program to remote into computer
     while True:
-        computerName = getComputerNameFromCPU(FileMakerDatabase)
+        cpuNumber = receiveInput.getCPUNumber(FileMakerDatabase)
+        computerName = receiveInput.getComputerNameFromCPUNumber(cpuNumber, FileMakerDatabase)
         driver.remoteControlZENWorks(username, password, computerName)
